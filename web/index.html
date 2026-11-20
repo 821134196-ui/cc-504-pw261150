@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>数据告警中心</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">◉</span>
+      <div>
+        <h1>数据告警中心</h1>
+        <p class="sub">质量 · 延迟 · 业务异常 — 合并 / 父子 / 升级 / 反馈保护</p>
+      </div>
+    </div>
+    <div class="topbar-stats" id="topStats"></div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="alerts">告警</button>
+    <button class="tab" data-tab="events">事件流</button>
+    <button class="tab" data-tab="rules">规则（含版本）</button>
+    <button class="tab" data-tab="ingest">事件接入调试</button>
+  </nav>
+
+  <main>
+    <!-- 告警列表 + 详情 -->
+    <section class="view" id="view-alerts">
+      <div class="filters">
+        <select id="filterStatus">
+          <option value="">全部状态</option>
+          <option value="firing">firing</option>
+          <option value="acknowledged">acknowledged</option>
+          <option value="resolved">resolved</option>
+          <option value="false_positive">false_positive</option>
+        </select>
+        <select id="filterSeverity">
+          <option value="">全部级别</option>
+          <option value="warning">warning</option>
+          <option value="major">major</option>
+          <option value="critical">critical</option>
+          <option value="info">info</option>
+        </select>
+        <button class="btn" id="btnTick">手动推进升级 (tick)</button>
+        <button class="btn ghost" id="btnRefresh">刷新</button>
+      </div>
+      <div class="layout">
+        <div class="panel list-panel">
+          <table class="table" id="alertTable">
+            <thead>
+              <tr><th>告警</th><th>级别</th><th>状态</th><th>合并/次数</th><th>最近事件</th><th>子</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="panel detail-panel" id="alertDetail">
+          <p class="empty">选择左侧告警查看时间线、证据、升级链路与反馈</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 事件流 -->
+    <section class="view hidden" id="view-events">
+      <div class="filters">
+        <select id="eventTypeFilter">
+          <option value="">全部类型</option>
+          <option value="data_quality">data_quality</option>
+          <option value="latency">latency</option>
+          <option value="business">business</option>
+        </select>
+        <label class="check"><input type="checkbox" id="onlyOutOfOrder" /> 只看乱序</label>
+        <button class="btn ghost" id="btnRefreshEvents">刷新</button>
+      </div>
+      <div class="panel">
+        <table class="table" id="eventTable">
+          <thead><tr><th>event_id</th><th>类型</th><th>状态</th><th>事件时间</th><th>接收时间</th><th>标记</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 规则 -->
+    <section class="view hidden" id="view-rules">
+      <div class="panel" id="rulesPanel"></div>
+    </section>
+
+    <!-- 接入调试 -->
+    <section class="view hidden" id="view-ingest">
+      <div class="panel ingest-grid">
+        <div>
+          <h3>发送事件</h3>
+          <textarea id="ingestPayload" class="code" rows="20"></textarea>
+          <div class="row">
+            <button class="btn primary" id="btnSend">发送事件</button>
+            <span class="hint">POST /api/events</span>
+          </div>
+        </div>
+        <div>
+          <h3>响应</h3>
+          <pre id="ingestResponse" class="code response">（等待发送）</pre>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast hidden"></div>
+  <script src="/app.js"></script>
+</body>
+</html>

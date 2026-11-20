@@ -1,0 +1,15 @@
+{
+  "name": "alert-center",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "数据告警中心：质量/延迟/业务异常事件接入、告警合并、父子关系、时间升级与人工反馈保护",
+  "scripts": {
+    "start": "node --no-warnings src/server.js",
+    "seed": "node --no-warnings scripts/seed.js",
+    "test": "node --no-warnings --test tests/*.test.js"
+  },
+  "engines": {
+    "node": ">=22.5"
+  }
+}
